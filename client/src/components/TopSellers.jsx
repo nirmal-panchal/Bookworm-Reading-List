@@ -9,17 +9,20 @@ import "swiper/css";
 import toast from "react-hot-toast";
 
 const TopSellers = () => {
+  // states for managing the component
   const [isHovered, setIsHovered] = useState(false);
   const [dropdownValue, setDropdownValue] = useState("fiction");
   const [bookData, setBookData] = useState([]);
 
+  // function for fetching the books by categories
   const fetchBooks = async () => {
-    const res = await GetBooksByGenre(dropdownValue);
+    const res = await GetBooksByGenre(dropdownValue); // api function
     if (res) {
       setBookData(res.data?.items);
     }
   };
 
+  // function for adding book to shelf
   const AddToShelf = async (bookId) => {
     toast.promise(AddBookToShelf(bookId), {
       loading: "loading",
@@ -42,7 +45,6 @@ const TopSellers = () => {
   useEffect(() => {
     fetchBooks();
   }, [dropdownValue]);
-
 
   return (
     <div className="mt-20">

@@ -4,16 +4,37 @@ import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css/navigation";
 import "swiper/css";
-import { GetRandomBooks } from "@/pages/api/BookApi";
+import { AddBookToShelf, GetRandomBooks } from "@/pages/api/BookApi";
+import toast from "react-hot-toast";
 
 const Recommended = () => {
-  const [bookData, setBookData] = useState([]);
+  const [bookData, setBookData] = useState([]); // state for books data which comes through api
 
   const fetchBooks = async () => {
-    const res = await GetRandomBooks();
+    const res = await GetRandomBooks(); // get books api function
     if (res) {
-      setBookData(res.data?.items);
+      setBookData(res.data?.items); // setting the items.
     }
+  };
+
+  // function for adding book to shelf
+  const AddToShelf = async (bookId) => {
+    toast.promise(AddBookToShelf(bookId), {
+      loading: "loading",
+      success: (res) => {
+        return (
+          <>
+            <b>{res.data.message}</b>
+          </>
+        );
+      },
+      error: (err) =>
+        err.response ? (
+          <b>{err.response.data.message}</b>
+        ) : (
+          <b>{err.message}</b>
+        ),
+    });
   };
 
   useEffect(() => {
@@ -46,7 +67,7 @@ const Recommended = () => {
         >
           {bookData?.map((item, index) => (
             <SwiperSlide key={index}>
-              <BookCard bookData={item} />
+              <BookCard bookData={item} AddToShelf={AddToShelf} />
             </SwiperSlide>
           ))}
         </Swiper>

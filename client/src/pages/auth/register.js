@@ -5,16 +5,19 @@ import { Endpoints } from "../api/endpoints";
 import { RegisterUser } from "../api/AuthApi";
 
 const Register = () => {
+  // state for handing form input
   const [formdata, setFormdata] = useState({
     username: "",
     email: "",
     password: "",
   });
 
+  // function for handing input change
   const handleInputChange = (e) => {
     setFormdata({ ...formdata, [e.target.name]: e.target.value });
   };
 
+  // function for submit handler
   const submitHandler = (e) => {
     e.preventDefault();
     toast.promise(RegisterUser(formdata), {

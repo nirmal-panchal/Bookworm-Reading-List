@@ -9,14 +9,17 @@ import { HiOutlineHeart } from "react-icons/hi";
 import { AddBookToShelf, SearchBooks } from "@/pages/api/BookApi";
 
 const Header = () => {
-  const [active, setActive] = useState(false);
-  const [search, setSearch] = useState("");
-  const [bookData, setBookData] = useState([]);
-  const { token, Logout } = useGlobalContext();
+  //  states for handling the controller
+  const [active, setActive] = useState(false); // state for stickey header
+  const [search, setSearch] = useState(""); // state for searching
+  const [bookData, setBookData] = useState([]); // state for setting the search data on searchbar
+  const { token, Logout } = useGlobalContext(); // imported from contextApi.
+  const router = useRouter();
 
   useEffect(() => {
     window &&
       window.addEventListener("scroll", () => {
+        // when scroll goes more than 70 setActive will be true
         if (window.scrollY > 70) {
           setActive(true);
         } else {
@@ -25,9 +28,8 @@ const Header = () => {
       });
   }, []);
 
-  const router = useRouter();
-
-  const handleLogin = () => {
+  // handler function for both login and logout.
+  const HandleLoginLogout = () => {
     if (token) {
       Logout();
       router.push("/").then(() => {
@@ -37,6 +39,8 @@ const Header = () => {
       router.push("/auth/login");
     }
   };
+
+  // handler function for reading list
   const handleShelf = () => {
     if (router.pathname === "/shelf") {
       router.push("/");
@@ -51,6 +55,7 @@ const Header = () => {
     }
   };
 
+  // handler function for search Api
   const searchBooks = async () => {
     const res = await SearchBooks(search);
     if (res) {
@@ -59,6 +64,7 @@ const Header = () => {
     }
   };
 
+  // handler function add to shelf
   const AddToShelf = async (bookId) => {
     toast.promise(AddBookToShelf(bookId), {
       loading: "loading",
@@ -77,8 +83,11 @@ const Header = () => {
         ),
     });
   };
+
+  // getting the search value
   const handleSearch = (e) => setSearch(e?.target?.value);
 
+  // debouncing function because of api call by pressing every key down.
   const debounceOnChange = debounce(handleSearch, 500);
 
   useEffect(() => {
@@ -104,6 +113,7 @@ const Header = () => {
           />
           <BsSearch className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500" />
         </div>
+        {/* when user search anything */}
         {search && (
           <div className="absolute mt-[415px] bg-[#eaeaea] w-auto h-auto rounded-lg">
             {bookData?.map((book, index) => (
@@ -141,7 +151,7 @@ const Header = () => {
         {/* ==== right part ==== */}
         <div className="flex justify-around gap-4">
           <button
-            onClick={handleLogin}
+            onClick={HandleLoginLogout}
             className={`${
               (router.route === "/auth/login" ||
                 router.route === "/auth/register") &&

@@ -7,17 +7,21 @@ import { useGlobalContext } from "@/context/GlobalContext";
 import { setCookie } from "cookies-next";
 
 const Login = () => {
-  const { Login } = useGlobalContext();
+  const { Login } = useGlobalContext(); // importing from context
+  const router = useRouter();
+
+  // state for handing form input
   const [formdata, setFormdata] = useState({
     email: "",
     password: "",
   });
-  const router = useRouter();
 
+  // function for handing input change
   const handleInputChange = (e) => {
     setFormdata({ ...formdata, [e.target.name]: e.target.value });
   };
 
+  // function for submit handler
   const submitHandler = (e) => {
     e.preventDefault();
     toast.promise(LoginUser(formdata), {

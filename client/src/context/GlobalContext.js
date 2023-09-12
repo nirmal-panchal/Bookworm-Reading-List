@@ -1,19 +1,21 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { getCookie, deleteCookie } from "cookies-next";
-import { Router, useRouter } from "next/router";
 
 const GlobalContext = createContext();
 
 export function AppProvider({ children }) {
+  // status for storing the values in context
   const [token, setToken] = useState(null);
   const [isLoggedOut, setIsLoggedOut] = useState(false);
-  const router = useRouter();
+
+  // function for setting the token into state 
   const Login = () => {
     setToken(getCookie("token"));
     setIsLoggedOut(false);
   };
 
+  // function for deleting the cookie and log out
   const Logout = () => {
     deleteCookie("token");
     setToken(null);
@@ -36,7 +38,7 @@ export function AppProvider({ children }) {
   );
 }
 
-// Create a custom hook to access the context
+// Created a custom hook to access the context
 export function useGlobalContext() {
   return useContext(GlobalContext);
 }

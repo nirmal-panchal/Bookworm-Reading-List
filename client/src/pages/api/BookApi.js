@@ -2,6 +2,7 @@ import axios from "axios";
 import { getCookie } from "cookies-next";
 import { Endpoints } from "./endpoints";
 
+// function for getting the books by genre
 export const GetBooksByGenre = (genre) => {
   return axios.get(
     process.env.NEXT_PUBLIC_BOOKS_API +
@@ -9,6 +10,7 @@ export const GetBooksByGenre = (genre) => {
   );
 };
 
+// function for recommended books
 export const GetRandomBooks = () => {
   return axios.get(
     process.env.NEXT_PUBLIC_BOOKS_API +
@@ -16,6 +18,7 @@ export const GetRandomBooks = () => {
   );
 };
 
+// function for getting books by search query
 export const SearchBooks = (searchValue) => {
   return axios.get(
     process.env.NEXT_PUBLIC_BOOKS_API +
@@ -23,6 +26,7 @@ export const SearchBooks = (searchValue) => {
   );
 };
 
+// function for adding book into db
 export const AddBookToShelf = (bookId) => {
   const token = getCookie("token");
   return axios.post(
@@ -36,6 +40,7 @@ export const AddBookToShelf = (bookId) => {
   );
 };
 
+// function for fetching the shelf data from db
 export const FetchShelf = () => {
   const token = getCookie("token");
 
@@ -46,6 +51,7 @@ export const FetchShelf = () => {
   });
 };
 
+// function for fetching all the books which is inside db
 export const FetchFromShelf = (books) => {
   const axiosPromises = books?.map((book) =>
     axios.get(process.env.NEXT_PUBLIC_BOOKS_API + `/${book.bookId}`)
@@ -53,6 +59,7 @@ export const FetchFromShelf = (books) => {
   return Promise.all(axiosPromises);
 };
 
+// function for removing book from shelf. (from db)
 export const RemoveFromShelf = (bookId) => {
   const token = getCookie("token");
 

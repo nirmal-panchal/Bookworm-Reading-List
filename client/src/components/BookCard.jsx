@@ -1,6 +1,7 @@
 import React from "react";
 import { HiOutlineHeart } from "react-icons/hi";
 
+// component for each book. 
 const BookCard = ({ bookData, AddToShelf }) => {
   return (
     <div className="flex gap-4 rounded-lg p-4 hover:shadow-2xl transition-all duration-300 m-2">
